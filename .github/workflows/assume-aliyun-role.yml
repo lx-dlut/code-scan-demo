@@ -20,6 +20,6 @@ jobs:
 
       - name: Print STS Token
         run: |
-          echo "Access Key ID: ${{ aliyun-access-key-id }}"
-          echo "Access Key Secret: ${{ aliyun-access-key-secret }}"
-          echo "Security Token: ${{ aliyun-security-token }}"
+          echo "Access Key ID: ${{ secrets.aliyun-access-key-id }}"
+          echo "Access Key Secret: ${{ secrets.aliyun-access-key-secret }}"
+          echo "Security Token: ${{ secrets.aliyun-security-token }}"
