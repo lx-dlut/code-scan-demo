@@ -19,8 +19,11 @@ jobs:
           role-to-assume: 'acs:ram::1924794279035094:role/github-code-scan-1'
           oidc-provider-arn: 'acs:ram::1924794279035094:oidc-provider/githubcodescan'
 
-      - name: Print STS Token
+      - name: Write STS Token to file
         run: |
-          echo "Access Key ID: ${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-id }}"
-          echo "Access Key Secret: ${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-secret }}"
-          echo "Security Token: ${{ steps.configure-aliyun-credentials.outputs.aliyun-security-token }}"
+          echo "Access Key ID: ${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-id }}" > sts_token.txt
+          echo "Access Key Secret: ${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-secret }}" >> sts_token.txt
+          echo "Security Token: ${{ steps.configure-aliyun-credentials.outputs.aliyun-security-token }}" >> sts_token.txt
+
+      - name: Display STS Token file content
+        run: cat sts_token.txt
