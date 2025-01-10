@@ -30,3 +30,15 @@ jobs:
           echo "Access Key ID MD5: $(md5sum access_key_id.txt | awk '{ print $1 }')"
           echo "Access Key Secret MD5: $(md5sum access_key_secret.txt | awk '{ print $1 }')"
           echo "Security Token MD5: $(md5sum security_token.txt | awk '{ print $1 }')"
+
+      - name: Decode and print OIDC token
+        run: |
+          # 获取 OIDC 令牌
+          OIDC_TOKEN=$(curl -s -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL" | jq -r .value)
+          
+          # 解析 OIDC 令牌的 payload 部分
+          PAYLOAD=$(echo "$OIDC_TOKEN" | cut -d '.' -f 2 | base64 -d | jq .)
+          
+          # 打印 sub 和 aud 信息
+          echo "OIDC Token sub: $(echo $PAYLOAD | jq -r .sub)"
+          echo "OIDC Token aud: $(echo $PAYLOAD | jq -r .aud)"
