@@ -21,9 +21,12 @@ jobs:
 
       - name: Write STS Token to file
         run: |
-          echo "Access Key ID: ${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-id }}" > sts_token.txt
-          echo "Access Key Secret: ${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-secret }}" >> sts_token.txt
-          echo "Security Token: ${{ steps.configure-aliyun-credentials.outputs.aliyun-security-token }}" >> sts_token.txt
+          echo "${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-id }}" > access_key_id.txt
+          echo "${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-secret }}" > access_key_secret.txt
+          echo "${{ steps.configure-aliyun-credentials.outputs.aliyun-security-token }}" > security_token.txt
 
-      - name: Display STS Token file content
-        run: cat sts_token.txt
+      - name: Display MD5 of STS Token parts
+        run: |
+          echo "Access Key ID MD5: $(md5sum access_key_id.txt | awk '{ print $1 }')"
+          echo "Access Key Secret MD5: $(md5sum access_key_secret.txt | awk '{ print $1 }')"
+          echo "Security Token MD5: $(md5sum security_token.txt | awk '{ print $1 }')"
