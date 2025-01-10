@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Configure Aliyun credentials
+        id: configure-aliyun-credentials
         uses: aliyun/configure-aliyun-credentials-action@v1
         with:
           role-to-assume: 'acs:ram::1924794279035094:role/github-code-scan-1'
@@ -20,6 +21,6 @@ jobs:
 
       - name: Print STS Token
         run: |
-          echo "Access Key ID: ${{ secrets.aliyun-access-key-id }}"
-          echo "Access Key Secret: ${{ secrets.aliyun-access-key-secret }}"
-          echo "Security Token: ${{ secrets.aliyun-security-token }}"
+          echo "Access Key ID: ${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-id }}"
+          echo "Access Key Secret: ${{ steps.configure-aliyun-credentials.outputs.aliyun-access-key-secret }}"
+          echo "Security Token: ${{ steps.configure-aliyun-credentials.outputs.aliyun-security-token }}"
