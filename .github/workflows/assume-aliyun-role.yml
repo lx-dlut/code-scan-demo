@@ -1,0 +1,25 @@
+name: Assume Aliyun Role and Print STS Token
+on: [push]
+
+jobs:
+  assume-role:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure Aliyun credentials
+        uses: aliyun/configure-aliyun-credentials-action@v1
+        with:
+          role-to-assume: 'acs:ram::1924794279035094:role/github-code-scan-1'
+          oidc-provider-arn: 'acs:ram::1924794279035094:oidc-provider/githubcodescan'
+
+      - name: Print STS Token
+        run: |
+          echo "Access Key ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}"
+          echo "Access Key Secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}"
+          echo "Security Token: ${{ secrets.ALIYUN_SECURITY_TOKEN }}"
